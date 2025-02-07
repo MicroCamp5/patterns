@@ -1,7 +1,10 @@
 package pl.comarch.microcamp.patterns;
 
+import pl.comarch.microcamp.patterns.strategy.BlikPaymentProvider;
+import pl.comarch.microcamp.patterns.strategy.P24PaymentProvider;
+import pl.comarch.microcamp.patterns.strategy.PaymentExecutor;
+
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 public class ShopBucketApplication {
 
@@ -24,28 +27,15 @@ public class ShopBucketApplication {
     items.add(e);
 
     orderStatus = 2;
+    PaymentExecutor paymentExecutor = new PaymentExecutor()
+            .addProvider("BLIK", new BlikPaymentProvider())
+            .addProvider("P24", new P24PaymentProvider());
 
     if (orderStatus == 2) {
-      if (provider == "BLIK") {
-        System.out.println(
-            "Operacja płatności BLIK "
-                + items.stream().map(i -> i.price).collect(Collectors.summingDouble(a -> a)));
-      } else if (provider == "P24") {
-        System.out.println(
-            "Operacja płatności P24 "
-                + items.stream().map(i -> i.price).collect(Collectors.summingDouble(a -> a)));
-      }
+      paymentExecutor.pay(items, provider);
     } else {
       System.out.println("Koszyk ma zły status");
     }
   }
 
-  private static class BucketItem {
-    int no;
-    String name;
-
-    int value;
-
-    double price;
-  }
 }
