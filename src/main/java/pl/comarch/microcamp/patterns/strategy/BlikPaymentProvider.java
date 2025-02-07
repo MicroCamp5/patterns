@@ -1,6 +1,6 @@
 package pl.comarch.microcamp.patterns.strategy;
 
-import pl.comarch.microcamp.patterns.BucketItem;
+import pl.comarch.microcamp.patterns.state.BucketItem;
 
 import java.util.List;
 import java.util.stream.Collectors;
